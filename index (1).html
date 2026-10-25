@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Portfolio of Alexander Bosch, Senior Full Stack Developer (Angular, ASP.NET Core, C#).">
+<title>Alexander Bosch</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky bar, split hero (headline left, live fleet map right), stats strip, then work, skills, to-scale career chart, contact. */
+:root {
+  --bg: #eef1f6;
+  --surface: #ffffff;
+  --surface-2: #f6f8fb;
+  --fg: #121723;
+  --muted: #556074;
+  --line: #d6dce7;
+  --accent: #2547d0;
+  --accent-soft: #e3e9fc;
+  --accent-fg: #ffffff;
+  --bar: #a9b8ef;
+  --road: #bcc5d8;
+  --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b0f17; --surface: #131925; --surface-2: #0e1420; --fg: #e8ecf5; --muted: #97a2b8;
+    --line: #232c3d; --accent: #8ea3ff; --accent-soft: #1b2547; --accent-fg: #0b0f17;
+    --bar: #36447f; --road: #2a3550; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b0f17; --surface: #131925; --surface-2: #0e1420; --fg: #e8ecf5; --muted: #97a2b8;
+  --line: #232c3d; --accent: #8ea3ff; --accent-soft: #1b2547; --accent-fg: #0b0f17;
+  --bar: #36447f; --road: #2a3550; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-padding-top: 76px; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 56px;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.08; }
+p { margin: 0; }
+ul, dl { margin: 0; padding: 0; list-style: none; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+.mono { font-family: var(--font-mono); }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* Top bar */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 60px; }
+.brand { font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; letter-spacing: -0.01em; color: var(--fg); text-decoration: none; white-space: nowrap; }
+.nav { display: flex; align-items: center; gap: 22px; }
+.nav a.link { color: var(--muted); text-decoration: none; font-size: 0.92rem; font-weight: 500; }
+.nav a.link:hover { color: var(--fg); }
+.theme { font: inherit; font-family: var(--font-mono); font-size: 12px; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+.theme:hover { border-color: var(--accent); }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center; padding-block: 64px 48px; }
+.hero-copy { display: grid; gap: 22px; min-width: 0; justify-items: start; }
+h1 { font-size: clamp(2.5rem, 5.4vw, 4.4rem); font-weight: 800; letter-spacing: -0.035em; }
+h1 em { font-style: normal; color: var(--accent); }
+.hero-copy p.sub { color: var(--muted); font-size: 1.1rem; max-width: 52ch; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { font: inherit; font-weight: 600; font-size: 0.95rem; text-decoration: none; border-radius: 8px; padding: 11px 18px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--fg); display: inline-block; }
+.btn.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.btn:hover { border-color: var(--accent); }
+
+.mapcard { position: relative; border: 1px solid var(--line); border-radius: 14px; background: var(--surface-2); overflow: hidden; aspect-ratio: 5 / 4; min-width: 0; max-width: 100%; }
+.mapcard canvas { display: block; width: 100%; height: 100%; }
+.hud { position: absolute; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.hud.tl { top: 12px; left: 12px; }
+.hud.br { bottom: 12px; right: 12px; }
+.live { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-right: 6px; }
+
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.stat { padding: 20px 20px 20px 0; display: grid; gap: 4px; min-width: 0; }
+.stat + .stat { padding-left: 20px; border-left: 1px solid var(--line); }
+.stat b { font-family: var(--font-display); font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.stat span { color: var(--muted); font-size: 0.88rem; }
+
+/* Sections */
+section { padding-top: 96px; }
+.sec-head { display: grid; gap: 10px; margin-bottom: 32px; }
+h2 { font-size: clamp(1.8rem, 3.4vw, 2.5rem); font-weight: 700; letter-spacing: -0.025em; }
+.about { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 48px; }
+.about p { color: var(--muted); font-size: 1.05rem; max-width: 60ch; }
+.about p + p { margin-top: 14px; }
+.lead-list { display: grid; gap: 0; border-top: 1px solid var(--line); align-content: start; }
+.lead-list li { padding: 14px 0; border-bottom: 1px solid var(--line); display: grid; gap: 2px; }
+.lead-list b { font-family: var(--font-display); font-size: 1.05rem; }
+.lead-list span { color: var(--muted); font-size: 0.93rem; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 20px; }
+.chip { font: inherit; font-family: var(--font-mono); font-size: 12px; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.chip:hover { border-color: var(--accent); color: var(--fg); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+.count { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-left: auto; }
+
+.cases { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.case-meta { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); }
+.case h3 { font-size: 1.3rem; letter-spacing: -0.01em; }
+.case p { color: var(--muted); font-size: 0.97rem; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 6px; }
+.tag { font-family: var(--font-mono); font-size: 11.5px; background: var(--accent-soft); color: var(--accent); padding: 3px 9px; border-radius: 5px; }
+
+.skill-groups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.sg { border: 1px solid var(--line); border-radius: 12px; padding: 20px; background: var(--surface); display: grid; gap: 12px; align-content: start; min-width: 0; }
+.sg h3 { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.sg ul { display: flex; flex-wrap: wrap; gap: 6px; }
+.sg li { font-size: 0.92rem; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 3px 10px; }
+
+.gantt { display: grid; gap: 10px; }
+.g-row { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 16px; align-items: center; }
+.g-label { display: grid; line-height: 1.3; min-width: 0; }
+.g-label b { font-size: 0.95rem; font-weight: 600; }
+.g-label span { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.g-track { position: relative; height: 16px; border-radius: 4px; background: var(--surface) linear-gradient(to right, var(--line) 1px, transparent 1px) 0 0 / 16.9014% 100%; }
+.g-bar { position: absolute; top: 3px; bottom: 3px; border-radius: 3px; background: var(--bar); }
+.g-bar.now { background: var(--accent); }
+.g-axis { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 16px; }
+.g-ticks { position: relative; height: 18px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.g-ticks span { position: absolute; top: 0; transform: translateX(-1px); padding-left: 4px; }
+
+.jobs { margin-top: 48px; display: grid; }
+.job { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 24px; padding: 22px 0; border-top: 1px solid var(--line); }
+.job-dates { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); padding-top: 4px; }
+.job h3 { font-size: 1.2rem; }
+.job-co { color: var(--accent); font-weight: 600; font-size: 0.95rem; margin: 4px 0 10px; }
+.job ul { display: grid; gap: 8px; color: var(--muted); font-size: 0.96rem; }
+.job li { padding-left: 16px; position: relative; }
+.job li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 6px; height: 2px; background: var(--accent); }
+
+.contact { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 40px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.contact p { color: var(--muted); max-width: 44ch; margin-top: 12px; }
+.c-list { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.c-row { display: grid; grid-template-columns: 80px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.c-row dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.c-row dd { margin: 0; overflow-wrap: anywhere; }
+.copy { font: inherit; font-family: var(--font-mono); font-size: 11px; color: var(--accent); background: var(--accent-soft); border: 0; border-radius: 5px; padding: 4px 10px; cursor: pointer; }
+footer { margin-top: 56px; color: var(--muted); font-size: 0.9rem; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .case, .sg { transition: border-color 0.15s ease, transform 0.15s ease; }
+  .case:hover, .sg:hover { border-color: var(--accent); transform: translateY(-2px); }
+}
+@media (min-width: 720px) { .case.wide { grid-column: span 2; } }
+@media (max-width: 900px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-block: 40px 36px; }
+  .about, .contact { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .skill-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat:nth-child(3) { padding-left: 0; border-left: 0; }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 719px) {
+  .cases, .skill-groups { grid-template-columns: minmax(0, 1fr); }
+  section { padding-top: 72px; }
+  .nav a.link { display: none; }
+  .contact { padding: 24px; }
+  .g-row, .g-axis { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .g-axis > div:first-child { display: none; }
+  .job { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">Alexander Bosch</a>
+    <nav class="nav" aria-label="Sections">
+      <a class="link" href="#work">Work</a>
+      <a class="link" href="#skills">Skills</a>
+      <a class="link" href="#career">Career</a>
+      <a class="link" href="#contact">Contact</a>
+      <button class="theme" id="theme" type="button" aria-label="Switch colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap" id="top">
+  <div class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Senior Full Stack Developer · Angular · ASP.NET Core · C#</p>
+      <h1>Web products for <em>fleets, payments</em> and healthcare.</h1>
+      <p class="sub">I build Angular and C# .NET applications for enterprise clients, including Philip Morris International and Thomson Reuters. Eleven years in, I now lead three developers at Para Xpress.</p>
+      <div class="actions">
+        <a class="btn primary" href="#work">See selected work</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+    </div>
+    <div class="mapcard">
+      <canvas id="map" role="img" aria-label="Illustrative animated map of vehicles moving along city streets"></canvas>
+      <span class="hud tl"><span class="live"></span>Fleet view</span>
+      <span class="hud br">Illustrative simulation</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>11+</b><span>years building enterprise web apps</span></div>
+    <div class="stat"><b>3</b><span>developers led at Para Xpress</span></div>
+    <div class="stat"><b>50+</b><span>employees using the dashboards I built at EEI</span></div>
+    <div class="stat"><b>90%</b><span>test coverage standard met at IBM</span></div>
+  </div>
+
+  <section id="about" aria-labelledby="h-about">
+    <div class="about">
+      <div>
+        <div class="sec-head"><p class="eyebrow">About</p><h2 id="h-about">Front end depth, back end range.</h2></div>
+        <p>I work across the stack: Angular on the front, ASP.NET Core and SQL Server behind it. The projects I'm proudest of are ones people depend on every day, such as a live vehicle map, a payment wallet and a hospital booking system.</p>
+        <p>I plan sprints and roadmaps with Product Owners and mentor through code reviews and pair programming.</p>
+      </div>
+      <ul class="lead-list">
+        <li><b>Angular at scale</b><span>Angular 14+ with RxJS and NgRx, plus years of AngularJS migration and maintenance.</span></li>
+        <li><b>.NET back end</b><span>C#, ASP.NET Core on .NET 10, Azure Functions, Cosmos DB and SQL Server.</span></li>
+        <li><b>Mentoring</b><span>One junior now delivers independently and one mid-level developer earned a promotion.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="work" aria-labelledby="h-work">
+    <div class="sec-head"><p class="eyebrow">Selected work</p><h2 id="h-work">What I've built.</h2></div>
+    <div class="filters" role="group" aria-label="Filter projects">
+      <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
+      <button class="chip" type="button" data-filter="angular" aria-pressed="false">Angular</button>
+      <button class="chip" type="button" data-filter="dotnet" aria-pressed="false">.NET / C#</button>
+      <button class="chip" type="button" data-filter="maps" aria-pressed="false">Maps &amp; tracking</button>
+      <button class="chip" type="button" data-filter="enterprise" aria-pressed="false">Enterprise clients</button>
+      <span class="count" id="count" aria-live="polite">8 of 8 projects</span>
+    </div>
+    <div class="cases" id="cases">
+      <article class="case" data-tags="angular dotnet maps">
+        <p class="case-meta">Para Xpress Inc. · 2024 to now</p>
+        <h3>Ops Tower</h3>
+        <p>A live vehicle tracking map with KPI dashboards, integrated with the Tracksolid API. Started from scratch, including the KPI dashboard API behind it.</p>
+        <div class="tags"><span class="tag">Angular</span><span class="tag">Tracksolid API</span><span class="tag">.NET 10</span><span class="tag">Cosmos DB</span></div>
+      </article>
+      <article class="case" data-tags="angular">
+        <p class="case-meta">Para Xpress Inc. · 2024 to now</p>
+        <h3>Modular Angular apps and component library</h3>
+        <p>Split legacy web apps out of a shared .cshtml super admin into three modular Angular applications, so design changes no longer affect other apps. Pages load faster and the code is easier to maintain. A reusable component library removes duplicated components across active projects.</p>
+        <div class="tags"><span class="tag">Angular</span><span class="tag">Angular Material</span><span class="tag">Component library</span></div>
+      </article>
+      <article class="case" data-tags="angular maps">
+        <p class="case-meta">EEI Corporation · 2022 to 2024</p>
+        <h3>eCarga Shipper App</h3>
+        <p>Built core features as part of an 8-person team, delivering fleet tracking that refreshes on every location update.</p>
+        <div class="tags"><span class="tag">Angular</span><span class="tag">Google Maps API</span></div>
+      </article>
+      <article class="case" data-tags="angular">
+        <p class="case-meta">EEI Corporation · 2022 to 2024</p>
+        <h3>Virtual Wallet</h3>
+        <p>A wallet with two payment gateways, Visa/Mastercard and GCash through Dragonpay. No failed top-ups were reported after release.</p>
+        <div class="tags"><span class="tag">Angular</span><span class="tag">Dragonpay</span><span class="tag">GCash</span><span class="tag">Visa / Mastercard</span></div>
+      </article>
+      <article class="case" data-tags="angular">
+        <p class="case-meta">EEI Corporation · 2022 to 2024</p>
+        <h3>Dispatch scheduling and live dashboards</h3>
+        <p>Replaced a complex manual dispatch process with a FullCalendar scheduling engine that detects and resolves driver booking conflicts. Also built real-time line and pie dashboards used by 50+ employees.</p>
+        <div class="tags"><span class="tag">FullCalendar</span><span class="tag">NGX Charts</span><span class="tag">Angular</span></div>
+      </article>
+      <article class="case" data-tags="angular">
+        <p class="case-meta">MicroSourcing · 2021</p>
+        <h3>Hospital booking system</h3>
+        <p>Built from scratch, delivering about half of the application. Defined the frontend architecture standards my co-developer adopted and designed UI/UX mockups to confirm requirements with stakeholders.</p>
+        <div class="tags"><span class="tag">Angular</span><span class="tag">Angular Material</span><span class="tag">UI/UX mockups</span></div>
+      </article>
+      <article class="case" data-tags="angular enterprise">
+        <p class="case-meta">IBM for Thomson Reuters · 2019 to 2021</p>
+        <h3>ONVIO, Tax &amp; Advisory cloud platform</h3>
+        <p>Refactored core modules in a hybrid Angular/AngularJS architecture with no outages during incremental releases. Wrote Jasmine and Karma tests to meet a 90% coverage requirement.</p>
+        <div class="tags"><span class="tag">Angular</span><span class="tag">AngularJS</span><span class="tag">Jasmine</span><span class="tag">Karma</span></div>
+      </article>
+      <article class="case" data-tags="dotnet enterprise">
+        <p class="case-meta">Accenture for Philip Morris International · 2015 to 2019</p>
+        <h3>Farmer booking application</h3>
+        <p>A booking application used by tobacco farmers, delivered full stack: C# REST APIs and web services, SQL Server tables and stored procedures, and the web front end.</p>
+        <div class="tags"><span class="tag">C#</span><span class="tag">SQL Server</span><span class="tag">AngularJS</span><span class="tag">REST APIs</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="skills" aria-labelledby="h-skills">
+    <div class="sec-head"><p class="eyebrow">Skills</p><h2 id="h-skills">The toolbox.</h2></div>
+    <div class="skill-groups">
+      <div class="sg"><h3>Front end</h3><ul><li>Angular 14+</li><li>TypeScript</li><li>RxJS</li><li>NgRx</li><li>Angular CLI</li><li>Angular Material</li><li>HTML5</li><li>CSS3</li><li>AngularJS</li></ul></div>
+      <div class="sg"><h3>Back end and data</h3><ul><li>C#</li><li>ASP.NET Core (.NET 10)</li><li>REST APIs</li><li>Web services</li><li>SQL Server</li><li>Stored procedures</li></ul></div>
+      <div class="sg"><h3>Cloud and DevOps</h3><ul><li>Azure Functions</li><li>Cosmos DB</li><li>Blob Storage</li><li>AWS</li><li>Git</li><li>TeamCity</li><li>Octopus Deploy</li></ul></div>
+      <div class="sg"><h3>Testing</h3><ul><li>Jasmine</li><li>Karma</li><li>Unit testing</li><li>Code reviews</li></ul></div>
+      <div class="sg"><h3>Integrations</h3><ul><li>Google Maps Services API</li><li>Tracksolid API</li><li>FullCalendar</li><li>NGX Charts</li><li>Visa / Mastercard</li><li>GCash (Dragonpay)</li></ul></div>
+      <div class="sg"><h3>Delivery</h3><ul><li>Agile / Scrum</li><li>Sprint planning</li><li>Jira</li><li>Confluence</li><li>Figma</li><li>Adobe XD</li><li>Cursor AI</li></ul></div>
+    </div>
+  </section>
+
+  <section id="career" aria-labelledby="h-career">
+    <div class="sec-head"><p class="eyebrow">Career · Jan 2015 to now</p><h2 id="h-career">Six teams, one thread.</h2></div>
+    <div class="gantt" role="img" aria-label="Timeline of employers from 2015 to 2026, drawn to scale: Accenture, IBM, MicroSourcing, RCG, EEI Corporation, Para Xpress">
+      <div class="g-row"><div class="g-label"><b>Accenture</b><span>Jan 2015 to Apr 2019</span></div><div class="g-track"><div class="g-bar" style="left:0%;width:36.62%"></div></div></div>
+      <div class="g-row"><div class="g-label"><b>IBM</b><span>May 2019 to Apr 2021</span></div><div class="g-track"><div class="g-bar" style="left:36.62%;width:16.9%"></div></div></div>
+      <div class="g-row"><div class="g-label"><b>MicroSourcing</b><span>Apr 2021 to Oct 2021</span></div><div class="g-track"><div class="g-bar" style="left:52.82%;width:4.93%"></div></div></div>
+      <div class="g-row"><div class="g-label"><b>RCG</b><span>Oct 2021 to Apr 2022</span></div><div class="g-track"><div class="g-bar" style="left:57.04%;width:4.93%"></div></div></div>
+      <div class="g-row"><div class="g-label"><b>EEI Corporation</b><span>May 2022 to Dec 2024</span></div><div class="g-track"><div class="g-bar" style="left:61.97%;width:22.54%"></div></div></div>
+      <div class="g-row"><div class="g-label"><b>Para Xpress Inc.</b><span>Dec 2024 to now</span></div><div class="g-track"><div class="g-bar now" style="left:83.8%;width:16.2%"></div></div></div>
+      <div class="g-axis" aria-hidden="true"><div></div><div class="g-ticks"><span style="left:0%">2015</span><span style="left:16.9%">2017</span><span style="left:33.8%">2019</span><span style="left:50.7%">2021</span><span style="left:67.6%">2023</span><span style="left:84.5%">2025</span></div></div>
+    </div>
+
+    <div class="jobs">
+      <article class="job">
+        <p class="job-dates">Dec 2024 to now</p>
+        <div>
+          <h3>Senior Frontend Web Developer</h3>
+          <p class="job-co">Para Xpress Inc.</p>
+          <ul>
+            <li>Lead three developers (senior mobile, mid-level and junior full stack), planning sprints and technical roadmaps with Product Owners.</li>
+            <li>Started two new web applications from scratch: a Regional Module app and Ops Tower, a live vehicle tracking map with KPI dashboards.</li>
+            <li>Recreated the Vehicle Registration and Member Registration modules and fixed APIs in older applications.</li>
+            <li>Work across a .NET 10 back end (ASP.NET Core APIs, Azure Functions on the v4 isolated worker, Cosmos DB, Blob Storage), integrating its REST APIs with Angular through RxJS.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="job">
+        <p class="job-dates">May 2022 to Dec 2024</p>
+        <div>
+          <h3>Senior Frontend Web Developer</h3>
+          <p class="job-co">EEI Corporation</p>
+          <ul>
+            <li>Built the eCarga Shipper App's core features with Angular and the Google Maps API.</li>
+            <li>Developed the Virtual Wallet with two payment gateways.</li>
+            <li>Built a FullCalendar dispatch engine and real-time NGX Charts dashboards.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="job">
+        <p class="job-dates">Oct 2021 to Apr 2022</p>
+        <div>
+          <h3>Senior Frontend Web Developer</h3>
+          <p class="job-co">RCG</p>
+          <ul>
+            <li>Migrated enterprise pages from legacy PHP/JavaScript to Angular, completing the work within my first month.</li>
+            <li>Maintained legacy AngularJS applications and shipped feature updates.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="job">
+        <p class="job-dates">Apr 2021 to Oct 2021</p>
+        <div>
+          <h3>Senior Frontend Web Developer</h3>
+          <p class="job-co">MicroSourcing</p>
+          <ul>
+            <li>Built a hospital booking system from scratch with Angular and Angular Material.</li>
+            <li>Defined frontend architecture standards and designed UI/UX mockups to confirm requirements.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="job">
+        <p class="job-dates">May 2019 to Apr 2021</p>
+        <div>
+          <h3>Frontend Developer</h3>
+          <p class="job-co">IBM, client Thomson Reuters ONVIO</p>
+          <ul>
+            <li>Developed, maintained and enhanced features across several ONVIO applications.</li>
+            <li>Refactored core modules in a hybrid Angular/AngularJS architecture with no outages.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="job">
+        <p class="job-dates">Jan 2015 to Apr 2019</p>
+        <div>
+          <h3>Application Development Analyst</h3>
+          <p class="job-co">Accenture</p>
+          <ul>
+            <li>Built C# REST APIs and web services and designed SQL Server tables and stored procedures for Philip Morris International and Accenture CIO applications.</li>
+            <li>Built and deployed web applications with C#, SQL Server, AngularJS, Angular 4-5 and jQuery.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="job">
+        <p class="job-dates">Graduated 2014</p>
+        <div>
+          <h3>BS Computer Science</h3>
+          <p class="job-co">University of Santo Tomas, Manila</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="contact" aria-labelledby="h-contact">
+    <div class="contact">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h2 id="h-contact" style="margin-top:10px">Hiring for Angular and .NET?</h2>
+        <p>I'm based in Marikina, Metro Manila. Email is the fastest way to reach me.</p>
+      </div>
+      <dl class="c-list">
+        <div class="c-row"><dt>Email</dt><dd id="email">alexanderboschh@gmail.com</dd><button class="copy" type="button" data-copy="email">Copy</button></div>
+        <div class="c-row"><dt>Phone</dt><dd id="phone">+63 977 616 8292</dd><button class="copy" type="button" data-copy="phone">Copy</button></div>
+        <div class="c-row"><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/alexander-bosch-4035b2a7/" target="_blank" rel="noopener">alexander-bosch-4035b2a7</a></dd><span></span></div>
+      </dl>
+    </div>
+    <footer><span>Alexander Bosch · Senior Full Stack Developer</span><span>Marikina, Metro Manila, Philippines</span></footer>
+  </section>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  /* Theme toggle */
+  var themeBtn = document.getElementById('theme');
+  function isDark() {
+    var t = root.getAttribute('data-theme');
+    if (t) return t === 'dark';
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function syncThemeLabel() { themeBtn.textContent = isDark() ? 'Light' : 'Dark'; }
+  themeBtn.addEventListener('click', function () {
+    root.setAttribute('data-theme', isDark() ? 'light' : 'dark');
+    syncThemeLabel();
+  });
+  syncThemeLabel();
+
+  /* Project filter */
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip[data-filter]'));
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.case'));
+  var count = document.getElementById('count');
+  function applyFilter(f) {
+    var shown = [];
+    cards.forEach(function (c) {
+      var ok = f === 'all' || c.getAttribute('data-tags').split(' ').indexOf(f) > -1;
+      c.hidden = !ok;
+      c.classList.remove('wide');
+      if (ok) shown.push(c);
+    });
+    if (shown.length % 2 === 1) shown[0].classList.add('wide');
+    count.textContent = shown.length + ' of ' + cards.length + ' projects';
+    chips.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-filter') === f ? 'true' : 'false'); });
+  }
+  chips.forEach(function (b) { b.addEventListener('click', function () { applyFilter(b.getAttribute('data-filter')); }); });
+  applyFilter('all');
+
+  /* Copy buttons */
+  Array.prototype.forEach.call(document.querySelectorAll('.copy'), function (btn) {
+    btn.addEventListener('click', function () {
+      var el = document.getElementById(btn.getAttribute('data-copy'));
+      function done() { var t = btn.textContent; btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = t; }, 1400); }
+      function fallback() {
+        var r = document.createRange(); r.selectNodeContents(el);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      }
+      try { navigator.clipboard.writeText(el.textContent).then(done, fallback); } catch (e) { fallback(); }
+    });
+  });
+
+  /* Illustrative fleet map */
+  var cv = document.getElementById('map');
+  if (!cv || !cv.getContext) return;
+  var ctx = cv.getContext('2d');
+  var W = 0, H = 0, dpr = 1, CELL = 44, vehicles = [], zones = [], gridInfo = null;
+  var col = { road: '#bcc5d8', accent: '#2547d0', fg: '#121723' };
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var running = false, raf = 0, visible = true;
+
+  function readColors() {
+    var cs = getComputedStyle(root);
+    col.road = cs.getPropertyValue('--road').trim() || col.road;
+    col.accent = cs.getPropertyValue('--accent').trim() || col.accent;
+    col.fg = cs.getPropertyValue('--fg').trim() || col.fg;
+  }
+  function rng(seed) {
+    return function () {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  function build() {
+    var r = rng(11);
+    var cols = Math.max(4, Math.floor(W / CELL)), rows = Math.max(4, Math.floor(H / CELL));
+    var ox = (W - cols * CELL) / 2, oy = (H - rows * CELL) / 2;
+    gridInfo = { cols: cols, rows: rows, ox: ox, oy: oy };
+    vehicles = [];
+    for (var i = 0; i < 11; i++) {
+      var gx = Math.floor(r() * (cols + 1)), gy = Math.floor(r() * (rows + 1));
+      var pts = [[gx, gy]], horiz = r() > 0.5;
+      for (var k = 0; k < 6; k++) {
+        var len = 1 + Math.floor(r() * 3), sign = r() > 0.5 ? 1 : -1;
+        var nx = gx, ny = gy;
+        if (horiz) nx = gx + sign * len; else ny = gy + sign * len;
+        if (nx < 0 || nx > cols || ny < 0 || ny > rows) { nx = gx; ny = gy; if (horiz) nx = gx - sign * len; else ny = gy - sign * len; }
+        nx = Math.min(cols, Math.max(0, nx)); ny = Math.min(rows, Math.max(0, ny));
+        if (nx !== gx || ny !== gy) { gx = nx; gy = ny; pts.push([gx, gy]); }
+        horiz = !horiz;
+      }
+      var px = pts.map(function (p) { return [ox + p[0] * CELL, oy + p[1] * CELL]; });
+      var cum = [0], total = 0;
+      for (var j = 1; j < px.length; j++) {
+        total += Math.abs(px[j][0] - px[j - 1][0]) + Math.abs(px[j][1] - px[j - 1][1]);
+        cum.push(total);
+      }
+      vehicles.push({ px: px, cum: cum, total: Math.max(total, 1), speed: 16 + r() * 22, offset: r() * total * 2, hero: i === 0 });
+    }
+    zones = [
+      { x: ox + Math.round(cols * 0.28) * CELL, y: oy + Math.round(rows * 0.34) * CELL, r: CELL * 1.8 },
+      { x: ox + Math.round(cols * 0.74) * CELL, y: oy + Math.round(rows * 0.7) * CELL, r: CELL * 1.5 }
+    ];
+  }
+  function posAt(v, s) {
+    var L = v.total, m = ((s % (2 * L)) + 2 * L) % (2 * L);
+    var d = m < L ? m : 2 * L - m;
+    for (var i = 1; i < v.cum.length; i++) {
+      if (d <= v.cum[i]) {
+        var seg = v.cum[i] - v.cum[i - 1] || 1, f = (d - v.cum[i - 1]) / seg;
+        return [v.px[i - 1][0] + (v.px[i][0] - v.px[i - 1][0]) * f, v.px[i - 1][1] + (v.px[i][1] - v.px[i - 1][1]) * f];
+      }
+    }
+    var last = v.px[v.px.length - 1];
+    return [last[0], last[1]];
+  }
+  function draw(t) {
+    if (!W) return;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    var g = gridInfo, i;
+    ctx.lineWidth = 1; ctx.strokeStyle = col.road; ctx.globalAlpha = 0.45;
+    ctx.beginPath();
+    for (i = 0; i <= g.cols; i++) { ctx.moveTo(g.ox + i * CELL, 0); ctx.lineTo(g.ox + i * CELL, H); }
+    for (i = 0; i <= g.rows; i++) { ctx.moveTo(0, g.oy + i * CELL); ctx.lineTo(W, g.oy + i * CELL); }
+    ctx.stroke();
+    ctx.globalAlpha = 0.9; ctx.lineWidth = 2.5; ctx.lineJoin = 'round';
+    vehicles.forEach(function (v) {
+      ctx.beginPath(); ctx.moveTo(v.px[0][0], v.px[0][1]);
+      for (var k = 1; k < v.px.length; k++) ctx.lineTo(v.px[k][0], v.px[k][1]);
+      ctx.stroke();
+    });
+    ctx.globalAlpha = 0.7; ctx.lineWidth = 1.5; ctx.strokeStyle = col.accent; ctx.setLineDash([5, 5]);
+    zones.forEach(function (z) { ctx.beginPath(); ctx.arc(z.x, z.y, z.r, 0, Math.PI * 2); ctx.stroke(); });
+    ctx.setLineDash([]);
+    ctx.fillStyle = col.accent;
+    vehicles.forEach(function (v) {
+      var s = t * v.speed + v.offset;
+      for (var k = 14; k >= 1; k--) {
+        var p = posAt(v, s - k * 5);
+        ctx.globalAlpha = 0.5 * (1 - k / 15);
+        ctx.beginPath(); ctx.arc(p[0], p[1], 2.4 * (1 - k / 22), 0, Math.PI * 2); ctx.fill();
+      }
+      var q = posAt(v, s);
+      ctx.globalAlpha = 1;
+      ctx.beginPath(); ctx.arc(q[0], q[1], 4.2, 0, Math.PI * 2); ctx.fill();
+      if (v.hero) {
+        ctx.globalAlpha = 0.9; ctx.lineWidth = 1.5; ctx.strokeStyle = col.accent;
+        ctx.beginPath(); ctx.arc(q[0], q[1], 10 + 2 * Math.sin(t * 3), 0, Math.PI * 2); ctx.stroke();
+      }
+    });
+    ctx.globalAlpha = 1;
+  }
+  function loop(now) {
+    if (!running) return;
+    draw(now / 1000);
+    raf = requestAnimationFrame(loop);
+  }
+  function setRunning(on) {
+    if (reduce) return;
+    if (on && !running) { running = true; raf = requestAnimationFrame(loop); }
+    if (!on && running) { running = false; cancelAnimationFrame(raf); }
+  }
+  function resize() {
+    var box = cv.parentNode.getBoundingClientRect();
+    W = Math.round(box.width); H = Math.round(box.height);
+    if (!W || !H) return;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = W * dpr; cv.height = H * dpr;
+    build(); readColors();
+    draw(30);
+  }
+  function recolor() { readColors(); if (!running) draw(30); }
+
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(cv.parentNode); else window.addEventListener('resize', resize);
+  if (window.MutationObserver) new MutationObserver(recolor).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    if (mq.addEventListener) mq.addEventListener('change', function () { recolor(); syncThemeLabel(); });
+  }
+  if (window.IntersectionObserver) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; setRunning(visible && !document.hidden); }).observe(cv);
+  document.addEventListener('visibilitychange', function () { setRunning(visible && !document.hidden); });
+  resize();
+  setRunning(true);
+})();
+</script>
+</body>
+</html>
