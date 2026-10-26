@@ -71,9 +71,13 @@ ul, dl { margin: 0; padding: 0; list-style: none; }
 /* Hero */
 .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center; padding-block: 64px 48px; }
 .hero-copy { display: grid; gap: 22px; min-width: 0; justify-items: start; }
-h1 { font-size: clamp(2.5rem, 5.4vw, 4.4rem); font-weight: 800; letter-spacing: -0.035em; }
-h1 em { font-style: normal; color: var(--accent); }
-.hero-copy p.sub { color: var(--muted); font-size: 1.1rem; max-width: 52ch; }
+h1 { font-size: clamp(2rem, 4.6vw, 3.4rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.04; }
+h1 span { display: block; }
+h1 .hl { color: var(--accent); }
+.hero-copy p.sub { color: var(--muted); font-size: 1.08rem; max-width: 50ch; }
+.stackrow { display: flex; flex-wrap: wrap; gap: 6px; }
+.stackrow li { font-family: var(--font-mono); font-size: 12px; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; }
+.hero-copy .eyebrow { color: var(--accent); }
 .actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .btn { font: inherit; font-weight: 600; font-size: 0.95rem; text-decoration: none; border-radius: 8px; padding: 11px 18px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--fg); display: inline-block; }
 .btn.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
@@ -161,6 +165,7 @@ footer { margin-top: 56px; color: var(--muted); font-size: 0.9rem; display: flex
 @media (min-width: 720px) { .case.wide { grid-column: span 2; } }
 @media (max-width: 900px) {
   .hero { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-block: 40px 36px; }
+  h1 { font-size: clamp(2rem, 9vw, 3.6rem); }
   .about, .contact { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .skill-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -196,11 +201,14 @@ footer { margin-top: 56px; color: var(--muted); font-size: 0.9rem; display: flex
 <div class="wrap" id="top">
   <div class="hero">
     <div class="hero-copy">
-      <p class="eyebrow">Senior Full Stack Developer · Angular · ASP.NET Core · C#</p>
-      <h1>Web products for <em>fleets, payments</em> and healthcare.</h1>
-      <p class="sub">I build Angular and C# .NET applications for enterprise clients, including Philip Morris International and Thomson Reuters. Eleven years in, I now lead three developers at Para Xpress.</p>
+      <p class="eyebrow">Senior Full Stack Developer · Marikina, PH</p>
+      <h1><span>Angular and .NET,</span><span class="hl">built end to end.</span></h1>
+      <p class="sub">I'm a senior full stack developer with 11+ years of enterprise delivery. I've built a real-time fleet tracking platform, a dual-gateway payment wallet and a hospital booking system from scratch, and I'm currently at Para Xpress.</p>
+      <ul class="stackrow" aria-label="Core stack">
+        <li>Angular</li><li>ASP.NET Core</li><li>C#</li><li>SQL Server</li><li>Azure</li>
+      </ul>
       <div class="actions">
-        <a class="btn primary" href="#work">See selected work</a>
+        <a class="btn primary" href="#work">View my work</a>
         <a class="btn" href="#contact">Get in touch</a>
       </div>
     </div>
@@ -213,7 +221,7 @@ footer { margin-top: 56px; color: var(--muted); font-size: 0.9rem; display: flex
 
   <div class="stats">
     <div class="stat"><b>11+</b><span>years building enterprise web apps</span></div>
-    <div class="stat"><b>3</b><span>developers led at Para Xpress</span></div>
+    <div class="stat"><b>2</b><span>new web apps started from scratch at Para Xpress</span></div>
     <div class="stat"><b>50+</b><span>employees using the dashboards I built at EEI</span></div>
     <div class="stat"><b>90%</b><span>test coverage standard met at IBM</span></div>
   </div>
@@ -326,7 +334,7 @@ footer { margin-top: 56px; color: var(--muted); font-size: 0.9rem; display: flex
           <h3>Senior Frontend Web Developer</h3>
           <p class="job-co">Para Xpress Inc.</p>
           <ul>
-            <li>Lead three developers (senior mobile, mid-level and junior full stack), planning sprints and technical roadmaps with Product Owners.</li>
+            <li>Plan sprints and technical roadmaps with Product Owners.</li>
             <li>Started two new web applications from scratch: a Regional Module app and Ops Tower, a live vehicle tracking map with KPI dashboards.</li>
             <li>Recreated the Vehicle Registration and Member Registration modules and fixed APIs in older applications.</li>
             <li>Work across a .NET 10 back end (ASP.NET Core APIs, Azure Functions on the v4 isolated worker, Cosmos DB, Blob Storage), integrating its REST APIs with Angular through RxJS.</li>
